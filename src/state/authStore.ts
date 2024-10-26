@@ -1,4 +1,5 @@
 import {create} from 'zustand';
+import {persist} from 'zustand/middleware';
 import axiosInstance from "../services/axiosInstance";
 
 interface AuthState {
@@ -10,29 +11,32 @@ interface AuthState {
     setIsAuthenticated: (isAuthenticated: boolean) => void;
 }
 
-const useAuthStore = create<AuthState>((set) => ({
-
-    token: localStorage.getItem('token'),
-    isAuthenticated: false,
-    setToken: (token: string) => {
-        localStorage.setItem('token', token);
-        set({token: token, isAuthenticated: true});
-    },
-    clearToken: () => {
-        localStorage.removeItem('token');
-        set({token: null, isAuthenticated: false});
-    },
-    setIsAuthenticated: (isAuthenticated: boolean) => set({isAuthenticated}),
-    logout: async () => {
-        try {
-            await axiosInstance.post('/Auth/Logout');
-            localStorage.removeItem('token');
-            set({token: null, isAuthenticated: false});
-        } catch (error) {
-            console.error('Logout failed', error);
+const useAuthStore = create<AuthState>()(
+    persist(
+        (set) => ({
+            token: null,
+            isAuthenticated: false,
+            setToken: (token: string) => {
+                set({token: token, isAuthenticated: true});
+            },
+            clearToken: () => {
+                set({token: null, isAuthenticated: false});
+            },
+            setIsAuthenticated: (isAuthenticated: boolean) => set({isAuthenticated}),
+            logout: async () => {
+                try {
+                    await axiosInstance.post('/Auth/Logout');
+                    set({token: null, isAuthenticated: false});
+                } catch (error) {
+                    console.error('Logout failed', error);
+                }
+                return Promise.resolve();
+            },
+        }),
+        {
+            name: 'auth-storage', // unique name
         }
-        return Promise.resolve();
-    },
-}));
+    )
+);
 
 export default useAuthStore;

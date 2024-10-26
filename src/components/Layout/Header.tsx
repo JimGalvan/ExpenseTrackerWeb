@@ -15,10 +15,9 @@ const Header = () => {
 
     return (
         <Box component="header" p="md" style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-            {/*<Box>*/}
-            {/*    <Link to="/">Home</Link>*/}
-            {/*    {isAuthenticated && <Link to="/expenses" style={{marginLeft: '1rem'}}>Expenses</Link>}*/}
-            {/*</Box>*/}
+            <Box>
+                {isAuthenticated && <Link to="/expenses" style={{marginLeft: '1rem'}}>Expenses</Link>}
+            </Box>
             <Box>
                 {isAuthenticated ? (
                     <Button onClick={handleLogout}>Logout</Button>
