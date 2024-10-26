@@ -1,5 +1,5 @@
 import {create} from 'zustand';
-import {persist} from 'zustand/middleware';
+import {devtools, persist} from 'zustand/middleware';
 import axiosInstance from "../services/axiosInstance";
 
 interface AuthState {
@@ -12,7 +12,8 @@ interface AuthState {
 }
 
 const useAuthStore = create<AuthState>()(
-    persist(
+    devtools(
+        persist(
         (set) => ({
             token: null,
             isAuthenticated: false,
@@ -36,6 +37,7 @@ const useAuthStore = create<AuthState>()(
         {
             name: 'auth-storage', // unique name
         }
+    )
     )
 );
 

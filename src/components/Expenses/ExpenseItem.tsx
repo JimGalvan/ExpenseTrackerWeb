@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Box, Button, Card, Group, Text} from '@mantine/core';
+import {Box, Button, Group, Text} from '@mantine/core';
 import {ExpenseDto, ExpenseResponseDto} from '../../types/expense';
 import EditExpenseForm from './EditExpenseForm';
 import {useDeleteExpenseMutation, useUpdateExpenseMutation} from "../../queries/expenseQueries";
@@ -44,7 +44,15 @@ const ExpenseItem: React.FC<ExpenseItemProps> = ({expense}) => {
     };
 
     return (
-        <Card shadow="sm" padding="md" mb="sm">
+        <Box
+            style={{
+                '--radius': '0.5rem',
+                borderRadius: 'var(--radius)',
+                boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
+            }}
+            p="md"
+            mb="md"
+        >
             {isEditing && currentExpense ? (
                 <EditExpenseForm
                     expense={currentExpense}
@@ -72,7 +80,7 @@ const ExpenseItem: React.FC<ExpenseItemProps> = ({expense}) => {
                     </Group>
                 </>
             )}
-        </Card>
+        </Box>
     );
 };
 

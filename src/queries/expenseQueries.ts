@@ -20,7 +20,7 @@ export const useAddExpenseMutation = () => {
     return useMutation<ExpenseResponseDto, Error, ExpenseDto>({
         mutationFn: addExpense,
         onSuccess: () => {
-            queryClient.invalidateQueries({queryKey: ['expenses']});
+            queryClient.invalidateQueries({queryKey: ['expenses']}).then(r => console.log(r));
         },
     });
 };

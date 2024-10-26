@@ -10,5 +10,4 @@ export interface UserResponseDto {
 
 export interface LoginResponse {
     token: string;
-    user: UserResponseDto;
 }
