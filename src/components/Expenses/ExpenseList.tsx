@@ -2,7 +2,7 @@ import React from 'react';
 import {useExpensesQuery} from '../../queries/expenseQueries';
 import ExpenseItem from "./ExpenseItem";
 import CreateExpenseForm from "./CreateExpenseForm";
-import {Box} from "@mantine/core";
+import ExpensePrediction from "./ExpensePrediction";
 
 const ExpenseList = () => {
     const {data: expenses, isLoading, error} = useExpensesQuery();
@@ -21,6 +21,7 @@ const ExpenseList = () => {
 
     return (
         <div>
+            <ExpensePrediction/>
             <CreateExpenseForm/>
             {expenses?.map((expense) => (
                 <ExpenseItem key={expense.id} expense={expense}/>
