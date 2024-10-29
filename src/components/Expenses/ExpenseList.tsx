@@ -21,6 +21,7 @@ const ExpenseList = () => {
 
     return (
         <div>
+            <h2>Expenses</h2>
             <ExpensePrediction/>
             <CreateExpenseForm/>
             {expenses?.map((expense) => (

@@ -10,6 +10,7 @@ import AuthRoute from './components/Auth/AuthRoute';
 import '@mantine/core/styles.css';
 import ProtectedRoute from "./components/Auth/ProtectedRoute";
 import Layout from "./components/Layout/Layout";
+import Categories from "./components/Categories/Categories";
 
 const queryClient = new QueryClient();
 
@@ -24,6 +25,7 @@ const App = () => {
                                 <Route path="/login" element={<LoginForm/>}/>
                                 <Route path="/register" element={<RegisterForm/>}/>
                                 <Route path="/expenses" element={<AuthRoute><ExpenseList/></AuthRoute>}/>
+                                <Route path="/categories" element={<AuthRoute><Categories/></AuthRoute>}/>
                                 <Route path="/" element={<ProtectedRoute><Navigate to="/expenses" replace/></ProtectedRoute>}/>
                             </Routes>
                         </Layout>

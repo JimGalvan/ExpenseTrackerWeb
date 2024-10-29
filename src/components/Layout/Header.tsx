@@ -17,6 +17,7 @@ const Header = () => {
         <Box component="header" p="md" style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
             <Box>
                 {isAuthenticated && <Link to="/expenses" style={{marginLeft: '1rem'}}>Expenses</Link>}
+                {isAuthenticated && <Link to="/categories" style={{marginLeft: '1rem'}}>Categories</Link>}
             </Box>
             <Box>
                 {isAuthenticated ? (
