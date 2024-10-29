@@ -1,10 +1,22 @@
-import React from 'react';
-import {Box, Button, TextInput} from '@mantine/core';
+import React, {useEffect, useState} from 'react';
+import {Box, Button, Select, TextInput} from '@mantine/core';
 import {useForm} from '@mantine/form';
 import {ExpenseDto} from '../../types/expense';
 import {useAddExpenseMutation} from '../../queries/expenseQueries';
+import {CategoryDto} from '../../types/categories';
+import axiosInstance from '../../services/axiosInstance';
 
 const CreateExpenseForm: React.FC = () => {
+    const [categories, setCategories] = useState<CategoryDto[]>([]);
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            const response = await axiosInstance.get('/categories');
+            setCategories(response.data);
+        };
+        fetchCategories();
+    }, []);
+
     const form = useForm<ExpenseDto>({
         initialValues: {
             category: '',
@@ -29,7 +41,14 @@ const CreateExpenseForm: React.FC = () => {
              }}
         >
             <form onSubmit={form.onSubmit(handleSubmit)}>
-                <TextInput label="Category" {...form.getInputProps('category')} />
+                <Select
+                    label="Category"
+                    data={[{value: '', label: 'None'}, ...categories.map(category => ({
+                        value: category.id.toString(), // Convert id to string
+                        label: category.name
+                    }))]}
+                    {...form.getInputProps('category')}
+                />
                 <TextInput label="Description" {...form.getInputProps('description')} />
                 <TextInput label="Amount" type="number" {...form.getInputProps('amount')} />
                 <Button type="submit" mt="sm" disabled={isPending}>
