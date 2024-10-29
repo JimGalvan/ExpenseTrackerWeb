@@ -1,4 +1,4 @@
-# Expense Tracker Application
+# Expense Tracker - Web Frontend
 
 This project is an Expense Management Application built with React and TypeScript. It allows users to create, edit, and delete expenses, as well as categorize them.
 
