@@ -1,5 +1,6 @@
 import React from 'react';
 import {Box, Button, Group, Text} from '@mantine/core';
+import isColorLight from "../../utils/utils";
 
 interface CategoryProps {
     name: string;
@@ -7,16 +8,6 @@ interface CategoryProps {
     onEdit: () => void;
     onDelete: () => void;
 }
-
-// Utility function to determine if a color is light or dark
-const isColorLight = (color: string): boolean => {
-    const hex = color.replace('#', '');
-    const r = parseInt(hex.substring(0, 2), 16);
-    const g = parseInt(hex.substring(2, 4), 16);
-    const b = parseInt(hex.substring(4, 6), 16);
-    const brightness = (r * 299 + g * 587 + b * 114) / 1000;
-    return brightness > 155;
-};
 
 const Category: React.FC<CategoryProps> = ({name, color, onEdit, onDelete}) => {
     const textColor = isColorLight(color) ? '#000' : '#fff';

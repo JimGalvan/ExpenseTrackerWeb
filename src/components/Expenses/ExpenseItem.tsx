@@ -1,14 +1,17 @@
 import React, {useState} from 'react';
 import {Box, Button, Group, Text} from '@mantine/core';
-import {ExpenseDto, ExpenseResponseDto} from '../../types/expense';
-import EditExpenseForm from './EditExpenseForm';
+import {ExpenseResponseDto} from '../../types/expense';
 import {useDeleteExpenseMutation, useUpdateExpenseMutation} from "../../queries/expenseQueries";
+import isColorLight, {parseExpenseResponseDto} from "../../utils/utils";
+import EditExpenseForm from "./EditExpenseForm";
+import {CategoryDto} from '../../types/categories';
 
 interface ExpenseItemProps {
     expense: ExpenseResponseDto;
+    categories: CategoryDto[];
 }
 
-const ExpenseItem: React.FC<ExpenseItemProps> = ({expense}) => {
+const ExpenseItem: React.FC<ExpenseItemProps> = ({expense, categories}) => {
     const [isEditing, setIsEditing] = useState(false);
     const [currentExpense, setCurrentExpense] = useState<ExpenseResponseDto | null>(null);
     const updateExpenseMutation = useUpdateExpenseMutation();
@@ -29,7 +32,8 @@ const ExpenseItem: React.FC<ExpenseItemProps> = ({expense}) => {
         deleteExpenseMutation.mutate(id);
     };
 
-    const handleSave = async (updatedExpense: ExpenseDto) => {
+    const handleSave = async (updatedExpense: ExpenseResponseDto) => {
+        const parsedExpense = parseExpenseResponseDto(updatedExpense);
         await updateExpenseMutation.mutateAsync({
             expenseId: expense?.id,
             expenseDto: updatedExpense,
@@ -43,27 +47,39 @@ const ExpenseItem: React.FC<ExpenseItemProps> = ({expense}) => {
         setCurrentExpense(null);
     };
 
+    let categoryColor = 'gray';
+    let categoryName = 'No Category';
+
+    if (expense.category) {
+        categoryName = expense.category.name;
+    }
+
+    if (expense.category) {
+        categoryColor = expense.category.color;
+    }
+
+    const textColor = isColorLight(categoryColor) ? '#000' : '#fff';
+
     return (
         <Box
             style={{
                 '--radius': '0.5rem',
                 borderRadius: 'var(--radius)',
-                boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
+                boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+                position: 'relative'
             }}
             p="md"
             mb="md"
         >
             {isEditing && currentExpense ? (
-                <EditExpenseForm
-                    expense={currentExpense}
-                    onSave={handleSave}
-                    onCancel={handleCancel}
-                />
+                <>
+                    <EditExpenseForm categories={categories} expense={expense} onSave={handleSave}
+                                     onCancel={handleCancel}/>
+                </>
             ) : (
                 <>
                     <Group>
                         <Box>
-                            <Text>{expense.category}</Text>
                             <Text size="sm" color="dimmed">
                                 {expense.description}
                             </Text>
@@ -78,6 +94,26 @@ const ExpenseItem: React.FC<ExpenseItemProps> = ({expense}) => {
                             Delete
                         </Button>
                     </Group>
+                    <Box
+                        style={{
+                            backgroundColor: categoryColor ?? 'gray',
+                            borderRadius: '4px',
+                            padding: '4px',
+                            textAlign: 'center',
+                            display: 'inline-block',
+                            position: 'absolute',
+                            top: '8px',
+                            right: '8px',
+                            minWidth: '75px',
+                            minHeight: '20px',
+                            borderColor: 'rgba(0, 0, 0, 0.1)',
+                            borderWidth: '2px',
+                        }}
+                    >
+                        <Text size="xs" color={textColor}>
+                            <h3>{categoryName}</h3>
+                        </Text>
+                    </Box>
                 </>
             )}
         </Box>

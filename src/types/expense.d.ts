@@ -1,6 +1,8 @@
+import {CategoryDto} from "./categories";
+
 export interface ExpenseDto {
     amount: number;
-    category: string;
+    categoryId: string;
     description: string;
 }
 
@@ -8,6 +10,7 @@ export interface ExpenseResponseDto {
     id: string;
     date: string;
     amount: number;
-    category: string;
+    category?: CategoryDto;
+    categoryId: string;
     description: string;
 }

@@ -12,7 +12,7 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({onSubmit, initialValues}) => {
     const form = useForm<ExpenseDto>({
         initialValues: {
             amount: initialValues?.amount || 0,
-            category: initialValues?.category || '',
+            categoryId: initialValues?.categoryId || '',
             description: initialValues?.description || '',
         },
     });
@@ -21,7 +21,7 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({onSubmit, initialValues}) => {
         if (initialValues) {
             form.setValues({
                 amount: initialValues.amount,
-                category: initialValues.category,
+                categoryId: initialValues.categoryId,
                 description: initialValues.description,
             });
         }
